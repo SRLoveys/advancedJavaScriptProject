@@ -19,12 +19,13 @@ export class Note {
      * @param {number} options.y - Y position on the board
      * @param {string} options.color - CSS class for note color
      */
-    constructor({ id = null, content = '', x = 0, y = 0, color = null }) {
+    constructor({ id = null, content = '', x = 0, y = 0, color = null, timestamp = null }) {
         this.id = id || this.generateId();
         this.content = content;
         this.x = x;
         this.y = y;
         this.color = color || this.getRandomColor();
+        this.timestamp = timestamp || new Date().toLocaleString();
         this.element = null;
     }
 
@@ -62,6 +63,12 @@ export class Note {
         // Set content
         const contentElement = noteElement.querySelector('.note-content');
         contentElement.textContent = this.content;
+
+        // Set time
+        const timestampElement = document.createElement('div');
+        timestampElement.className = 'note-timestamp';
+        timestampElement.textContent = this.timestamp;
+        noteElement.appendChild(timestampElement);
         
         // Store reference to the element
         this.element = noteElement;
@@ -90,10 +97,12 @@ export class Note {
     updateContent(content) {
         this.content = content;
         
-        if (this.element) {
-            const contentElement = this.element.querySelector('.note-content');
-            contentElement.textContent = content;
-        }
+        // Below was causing a loop to constantly refresh
+
+        // if (this.element) {
+        //     const contentElement = this.element.querySelector('.note-content');
+        //     contentElement.textContent = content;
+        // }
     }
 
     /**
