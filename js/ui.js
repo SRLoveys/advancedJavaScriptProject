@@ -82,6 +82,8 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
     const contentElement = noteElement.querySelector('.note-content');
     const deleteButton = noteElement.querySelector('.delete-btn');
     const quoteButton = noteElement.querySelector('.quote-btn');
+    const sortAscendButton = noteElement.querySelector('.ascending-btn');
+    const sortDescendButton = noteElement.querySelector('.descending-btn');
     
     // Track whether the note is being dragged
     let isDragging = false;
@@ -96,6 +98,78 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
     deleteButton.addEventListener('click', () => {
         deleteNote(noteElement, note, noteManager);
     });
+
+    // Ascending sort button handler
+    sortAscendButton.addEventListener('click', () => {
+
+        const noteBoard = document.getElementById('note-board');
+
+        // Grab the notes
+        const notes = noteManager.getAllNotes();
+
+        // Sort them ascending order
+        notes.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+        noteBoard.innerHTML = '';
+
+        // Re-render the board
+        let y = 10;
+        let x = 10;
+        const noteWidth = 200;
+        const noteHeight = 200;
+        const maxWidth = 2000;
+
+        notes.forEach(note => {
+
+            if (note.element) {
+                if ( x + noteWidth > maxWidth) {
+                    x = 10;
+                    y += noteHeight + 10
+                }
+                note.updatePosition(x, y);
+                noteBoard.appendChild(note.element);
+            }
+
+            x += noteWidth + 10
+
+        })
+    })
+
+    // Descending sort button handler
+    sortDescendButton.addEventListener('click', () => {
+
+        const noteBoard = document.getElementById('note-board');
+
+        // Grab the notes
+        const notes = noteManager.getAllNotes();
+
+        // Sort them descending order
+        notes.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        noteBoard.innerHTML = '';
+
+        // Re-render the board
+        let y = 10;
+        let x = 10;
+        const noteWidth = 200;
+        const noteHeight = 200;
+        const maxWidth = 2000;
+
+        notes.forEach(note => {
+
+            if (note.element) {
+                if ( x + noteWidth > maxWidth) {
+                    x = 10;
+                    y += noteHeight + 10
+                }
+                note.updatePosition(x, y);
+                noteBoard.appendChild(note.element);
+            }
+
+            x += noteWidth + 10
+
+        })
+    })
     
     // Quote button handler
     quoteButton.addEventListener('click', async () => {

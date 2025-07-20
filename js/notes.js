@@ -115,7 +115,8 @@ export class Note {
             content: this.content,
             x: this.x,
             y: this.y,
-            color: this.color
+            color: this.color,
+            timestamp: this.timestamp
         };
     }
 
