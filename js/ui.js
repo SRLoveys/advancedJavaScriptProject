@@ -117,7 +117,7 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
         let x = 10;
         const noteWidth = 200;
         const noteHeight = 200;
-        const maxWidth = 2000;
+        const maxWidth = window.innerWidth;
 
         notes.forEach(note => {
 
@@ -153,7 +153,7 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
         let x = 10;
         const noteWidth = 200;
         const noteHeight = 200;
-        const maxWidth = 2000;
+        const maxWidth = window.innerWidth;
 
         notes.forEach(note => {
 
