@@ -84,6 +84,7 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
     const quoteButton = noteElement.querySelector('.quote-btn');
     const sortAscendButton = document.querySelector('#ascending-btn');
     const sortDescendButton = document.querySelector('#descending-btn');
+    const imageButton = noteElement.querySelector('.img-btn');
     
     // Track whether the note is being dragged
     let isDragging = false;
@@ -171,6 +172,35 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
         })
     })
     
+    // Image button handler
+    
+    imageButton.addEventListener("click", () => {
+        const preview = noteElement.querySelector("img")
+        const fileInput = noteElement.querySelector("#input");
+
+        fileInput.click();
+
+        fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            const image = reader.result;
+            preview.src = image;
+            preview.style.display = "block"; 
+
+            note.imageData = image;
+
+            noteManager.saveAllNotes();
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+
+    };
+    });
+
     // Quote button handler
     quoteButton.addEventListener('click', async () => {
         try {
@@ -299,6 +329,13 @@ export function renderAllNotes(noteManager) {
     // Render all notes
     noteManager.getAllNotes().forEach(note => {
         const noteElement = note.createElement();
+        if (note.imageData) {
+            const img = noteElement.querySelector('img');
+            if (img) {
+                img.src = note.imageData;
+                img.style.display = 'block';
+            }
+        }
         setupNoteEventListeners(noteElement, note, noteManager);
         noteBoard.appendChild(noteElement);
     });
