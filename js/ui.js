@@ -206,6 +206,7 @@ export function setupNoteEventListeners(noteElement, note, noteManager) {
         try {
             quoteButton.textContent = '⌛'; // Show loading indicator
             await note.addRandomQuote();
+            location.reload();
             quoteButton.textContent = '💡'; // Restore original icon
         } catch (error) {
             // Show error indicator briefly
